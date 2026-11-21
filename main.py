@@ -187,7 +187,7 @@ def guilloche(d, box, ink, n_waves=5, amp=26, phase=0.0, step=7, vertical=False)
             off = amp * math.sin(t * math.pi * 4 + phase + k * 1.7)
             off += amp * 0.45 * math.sin(t * math.pi * 9 + phase * 2 + k)
             if vertical:
-                pts.append((base + off, y0 + (y1 - y0) * t) if False else (base + off, y0 + (y1 - y0) * t))
+                pts.append((base + off, y0 + (y1 - y0) * t))
             else:
                 pts.append((x0 + (x1 - x0) * t, base + off))
             t += step / 1000.0
@@ -545,11 +545,11 @@ def visa_page(img):
 def paper_base():
     img = Image.new("RGBA", (CW, CH), (52, 58, 68, 255))
     d = ImageDraw.Draw(img, "RGBA")
-    # desk vignette
+    # desk vignette (each band drawn at full step height — no striping)
     for yy in range(0, CH, 4):
         t = yy / CH
         c = int(58 - 16 * abs(t - 0.42))
-        d.line([(0, yy), (CW, yy)], fill=(c - 6, c, c + 8, 255))
+        d.line([(0, yy), (CW, yy)], fill=(c - 6, c, c + 8, 255), width=4)
     # soft shadow under the spread
     sh = Image.new("RGBA", (CW, CH), (0, 0, 0, 0))
     sd = ImageDraw.Draw(sh)
